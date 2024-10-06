@@ -50,6 +50,14 @@ namespace Lab1
 
             var app = builder.Build();
 
+            var configuraton = app.Services.GetService<IConfiguration>();
+
+            var hosting = app.Services.GetService<IWebHostEnvironment>();
+
+            var secrets = configuraton.GetSection("Secrets").Get<AppSecrets>();
+
+            DbInitializer.appSecrets = secrets;
+
             // Seed database with roles and users
             using (var scope = app.Services.CreateScope())
             {

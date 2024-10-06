@@ -1,4 +1,5 @@
-﻿using Lab1.Models;
+﻿
+using Lab1.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using System;
@@ -8,21 +9,14 @@ using System.Threading.Tasks;
 namespace Lab1.Data
 {
     public static class DbInitializer
+
     {
+        public static AppSecrets appSecrets { get; set; }
+
         public static async Task InitializeAsync(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             // Logging for tracking
             Console.WriteLine("Starting database seeding...");
-
-            // Retrieve passwords securely from environment variables or configuration
-            var managerPassword = Environment.GetEnvironmentVariable("ManagerPassword");
-            var employeePassword = Environment.GetEnvironmentVariable("EmployeePassword");
-
-            // Fallback if environment variables are not set (optional)
-            if (string.IsNullOrEmpty(managerPassword) || string.IsNullOrEmpty(employeePassword))
-            {
-                throw new InvalidOperationException("Manager and Employee passwords must be set in environment variables.");
-            }
 
             // Seed roles: Manager and Employee
             string[] roleNames = { "Manager", "Employee" };
@@ -64,7 +58,7 @@ namespace Lab1.Data
                 };
 
                 Console.WriteLine("Creating Manager user...");
-                var result = await userManager.CreateAsync(manager, managerPassword);
+                var result = await userManager.CreateAsync(manager, appSecrets.ManagerPassword);
                 if (result.Succeeded)
                 {
                     Console.WriteLine("Manager user created successfully.");
@@ -95,7 +89,7 @@ namespace Lab1.Data
                 };
 
                 Console.WriteLine("Creating Employee user...");
-                var result = await userManager.CreateAsync(employee, employeePassword);
+                var result = await userManager.CreateAsync(employee, appSecrets.EmployeePassword);
                 if (result.Succeeded)
                 {
                     Console.WriteLine("Employee user created successfully.");
