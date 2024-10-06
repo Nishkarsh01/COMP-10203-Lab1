@@ -27,9 +27,9 @@ project.fragment.lock.json
 local.settings.json
 
 # Ignore sensitive configuration files
-appsettings.json
-appsettings.Development.json
-appsettings.Staging.json
+# appsettings.json
+# appsettings.Development.json
+# appsettings.Staging.json
 
 # Optional - exclude production settings from being committed
 appsettings.Production.json
